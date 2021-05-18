@@ -242,6 +242,22 @@ class VoilaHandler(JupyterHandler):
                 yield output_cell
 
     async def load_notebook(self, path):
+        # Dirty customization for getting notebooks from URL specified via querystring parameter.
+        import tempfile
+        import urllib.parse
+        import requests
+        url = self.request.arguments['url'][0].decode()
+        suffix = urllib.parse.urlparse(url).path.split('/')[-1]
+        with tempfile.NamedTemporaryFile(
+            dir=self.contents_manager.root_dir,
+            suffix=suffix,
+        ) as f:
+            f.write(requests.get(url).content)
+            f.flush()
+            nb = await self._load_notebook(os.path.relpath(f.name, self.contents_manager.root_dir))
+            return nb
+
+    async def _load_notebook(self, path):
         model = self.contents_manager.get(path=path)
         if 'content' not in model:
             raise tornado.web.HTTPError(404, 'file not found')
