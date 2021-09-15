@@ -36,7 +36,7 @@ COPY --from=voila_rootfs_builder /etc/ /etc/
 
 
 FROM base_image_python AS kernel_rootfs_builder
-RUN python3 -m pip install --no-cache-dir ipywidgets ipyvolume bqplot scipy ipykernel
+RUN python3 -m pip install --no-cache-dir ipywidgets ipyvolume qgrid bqplot scipy ipykernel
 FROM scratch AS kernel_rootfs
 COPY --from=kernel_rootfs_builder /usr/ /usr/
 COPY --from=kernel_rootfs_builder /etc/ /etc/
