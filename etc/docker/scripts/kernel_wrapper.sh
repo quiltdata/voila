@@ -31,5 +31,5 @@ exec env -i /usr/bin/bwrap \
     --hostname voila-kernel \
     --bind "$VOILA_CONNECTION_DIR" "$VOILA_CONNECTION_DIR" \
     --setenv PATH $PATH \
-    python3 -m ipykernel_launcher -f "$CONNECTION_FILE"
+    python3 -m ipykernel_launcher --colors=NoColor -f "$CONNECTION_FILE"
 
