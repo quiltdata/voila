@@ -30,6 +30,24 @@ from .exporter import VoilaExporter
 from .paths import collect_template_paths
 
 
+def get_user_credentials(request_handler):
+    attrs_map = (
+        ('access_key', 'AWS_ACCESS_KEY_ID'),
+        ('secret_key', 'AWS_SECRET_ACCESS_KEY'),
+        ('session_token', 'AWS_SESSION_TOKEN'),
+    )
+    creds = {
+        dst: request_handler.get_query_argument(src, default='')
+        for src, dst in attrs_map
+    }
+    if any(creds.values()) and not all(creds.values()):
+        raise tornado.web.HTTPError(
+            400,
+            f'{", ".join(dict(attrs_map))} are required.'
+        )
+    return creds
+
+
 class VoilaHandler(JupyterHandler):
 
     def initialize(self, **kwargs):
@@ -80,6 +98,8 @@ class VoilaHandler(JupyterHandler):
         host, port = split_host_and_port(self.request.host.lower())
         self.kernel_env['SERVER_PORT'] = str(port) if port else ''
         self.kernel_env['SERVER_NAME'] = host
+
+        self.kernel_env.update(get_user_credentials(self))
 
         # we can override the template via notebook metadata or a query parameter
         template_override = None
