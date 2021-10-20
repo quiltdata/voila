@@ -33,7 +33,7 @@ exec env -i /usr/bin/bwrap \
     --bind "$VOILA_CONNECTION_DIR" "$VOILA_CONNECTION_DIR" \
     --dir $NEW_HOME \
     --setenv HOME $NEW_HOME \
-    --setenv PATH $PATH \
+    --setenv PATH $PATH:$NEW_HOME/.local/bin \
     --setenv AWS_ACCESS_KEY_ID "$AWS_ACCESS_KEY_ID" \
     --setenv AWS_SECRET_ACCESS_KEY "$AWS_SECRET_ACCESS_KEY" \
     --setenv AWS_SESSION_TOKEN "$AWS_SESSION_TOKEN" \
