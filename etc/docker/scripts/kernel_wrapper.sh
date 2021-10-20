@@ -7,6 +7,7 @@ CONNECTION_FILE=$1
 #        without sharing them between clients.
 VOILA_CONNECTION_DIR=$(python3 -c 'import os; print(os.path.dirname("'"$CONNECTION_FILE"'"))')
 #SOCKET_FILE=$(python3 -c 'import json, os; print(json.load(open("'"$CONNECTION_FILE"'"))["ip"])')
+NEW_HOME=/home/voila-kernel
 exec env -i /usr/bin/bwrap \
     --new-session \
     --die-with-parent \
@@ -30,6 +31,8 @@ exec env -i /usr/bin/bwrap \
     --dev /dev \
     --hostname voila-kernel \
     --bind "$VOILA_CONNECTION_DIR" "$VOILA_CONNECTION_DIR" \
+    --dir $NEW_HOME \
+    --setenv HOME $NEW_HOME \
     --setenv PATH $PATH \
     python3 -m ipykernel_launcher --colors=NoColor -f "$CONNECTION_FILE"
 
