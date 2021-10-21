@@ -33,6 +33,7 @@ exec env -i /usr/bin/bwrap \
     --bind "$VOILA_CONNECTION_DIR" "$VOILA_CONNECTION_DIR" \
     --dir $NEW_HOME \
     --setenv HOME $NEW_HOME \
+    --dir $NEW_HOME/.local/lib/python3.8/site-packages \
     --setenv PATH $PATH:$NEW_HOME/.local/bin \
     --setenv AWS_ACCESS_KEY_ID "$AWS_ACCESS_KEY_ID" \
     --setenv AWS_SECRET_ACCESS_KEY "$AWS_SECRET_ACCESS_KEY" \
