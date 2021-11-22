@@ -38,5 +38,8 @@ exec env -i /usr/bin/bwrap \
     --setenv AWS_ACCESS_KEY_ID "$AWS_ACCESS_KEY_ID" \
     --setenv AWS_SECRET_ACCESS_KEY "$AWS_SECRET_ACCESS_KEY" \
     --setenv AWS_SESSION_TOKEN "$AWS_SESSION_TOKEN" \
+    --setenv QUILT_PKG_BUCKET "$QUILT_PKG_BUCKET" \
+    --setenv QUILT_PKG_NAME "$QUILT_PKG_NAME" \
+    --setenv QUILT_PKG_TOP_HASH "$QUILT_PKG_TOP_HASH" \
     python3 -m ipykernel_launcher --colors=NoColor -f "$CONNECTION_FILE"
 
