@@ -48,6 +48,24 @@ def get_user_credentials(request_handler):
     return creds
 
 
+def get_pkg_vars(request_handler):
+    attrs_map = (
+        ('pkg_bucket', 'QUILT_PKG_BUCKET'),
+        ('pkg_name', 'QUILT_PKG_NAME'),
+        ('pkg_top_hash', 'QUILT_PKG_TOP_HASH'),
+    )
+    pkg_vars = {
+        dst: request_handler.get_query_argument(src, default='')
+        for src, dst in attrs_map
+    }
+    if any(pkg_vars.values()) and not all(pkg_vars.values()):
+        raise tornado.web.HTTPError(
+            400,
+            f'{", ".join(dict(attrs_map))} are required.'
+        )
+    return pkg_vars
+
+
 class VoilaHandler(JupyterHandler):
 
     def initialize(self, **kwargs):
@@ -100,6 +118,7 @@ class VoilaHandler(JupyterHandler):
         self.kernel_env['SERVER_NAME'] = host
 
         self.kernel_env.update(get_user_credentials(self))
+        self.kernel_env.update(get_pkg_vars(self))
 
         # we can override the template via notebook metadata or a query parameter
         template_override = None
