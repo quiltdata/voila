@@ -36,7 +36,7 @@ COPY --from=voila_rootfs_builder /etc/ /etc/
 
 
 FROM base_image_python AS kernel_rootfs_builder
-RUN python3 -m pip install --no-cache-dir altair bqplot ipykernel ipyvolume ipywidgets pandas perspective-python pyarrow PyYAML quilt3 scipy
+RUN python3 -m pip install --no-cache-dir altair bqplot ipykernel ipyvolume ipywidgets pandas perspective-python==1.0.1 pyarrow PyYAML quilt3 scipy
 FROM scratch AS kernel_rootfs
 COPY --from=kernel_rootfs_builder /usr/ /usr/
 COPY --from=kernel_rootfs_builder /etc/ /etc/
