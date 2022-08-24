@@ -41,5 +41,5 @@ exec env -i /usr/bin/bwrap \
     --setenv QUILT_PKG_BUCKET "$QUILT_PKG_BUCKET" \
     --setenv QUILT_PKG_NAME "$QUILT_PKG_NAME" \
     --setenv QUILT_PKG_TOP_HASH "$QUILT_PKG_TOP_HASH" \
-    python3 -m ipykernel_launcher --colors=NoColor -f "$CONNECTION_FILE"
+    /usr/miniconda3/bin/conda run -n voilaenv python3 -m ipykernel_launcher --colors=NoColor -f "$CONNECTION_FILE"
 

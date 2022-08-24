@@ -12,7 +12,6 @@ RUN apt-get update && \
     apt-get full-upgrade -y --no-install-recommends && \
     apt-get install -y --no-install-recommends python3-pip && \
     python3 -m pip install --no-cache-dir -U pip setuptools wheel
-#RUN apt-get install -y --no-install-recommends wget libcap2-bin
 
 
 FROM base_image_python AS voila_builder
@@ -29,13 +28,35 @@ RUN apt-get install -y --no-install-recommends bubblewrap
 COPY --from=voila_builder /voila/dist/$voila_wheel_filename .
 RUN python3 -m pip install --no-cache-dir \
         ./$voila_wheel_filename \
-        requests
+        requests \
+        'jinja2==2.11.3' \
+        'markupsafe==2.0.1' \
+        'ipython_genutils==0.2.0'
 FROM scratch AS voila_rootfs
 COPY --from=voila_rootfs_builder /usr/ /usr/
 COPY --from=voila_rootfs_builder /etc/ /etc/
 
 
-FROM base_image_python AS kernel_rootfs_builder
+FROM base_image AS kernel_rootfs_builder
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends wget && \
+	apt-get install -y --no-install-recommends ca-certificates
+# Miniconda
+ARG conda_dir="/usr/miniconda3"
+ENV PATH="${conda_dir}/bin:${PATH}"
+ARG PATH="${conda_dir}/bin:${PATH}"
+ARG mconda="Miniconda3-py38_4.12.0-Linux-x86_64.sh"
+RUN wget \
+    https://repo.anaconda.com/miniconda/"$mconda" && \
+    bash "$mconda" -p "$conda_dir" -b && \
+    rm -f "$mconda"
+# Create conda env
+ARG cenv="customer-env.yml"
+COPY "$cenv" .
+RUN conda env create -n voilaenv --file "$cenv"
+# Use conda env for subsequent RUNs
+SHELL ["conda", "run", "-n", "voilaenv", "/bin/bash", "-c"]
+
 RUN python3 -m pip install --no-cache-dir altair bqplot ipykernel ipyvolume ipywidgets pandas perspective-python==1.0.1 pyarrow PyYAML quilt3 scipy
 FROM scratch AS kernel_rootfs
 COPY --from=kernel_rootfs_builder /usr/ /usr/
@@ -73,3 +94,4 @@ COPY etc/docker/scripts/sandbox-kernelspec.json usr/local/share/jupyter/kernels/
 WORKDIR $voila_rootfs_dir
 ENTRYPOINT ["/voila_wrapper.sh"]
 CMD ["voila", "--no-browser", "--port=8866", "--KernelManager.transport=ipc"]
+
