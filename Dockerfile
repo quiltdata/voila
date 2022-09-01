@@ -29,7 +29,10 @@ RUN apt-get install -y --no-install-recommends bubblewrap
 COPY --from=voila_builder /voila/dist/$voila_wheel_filename .
 RUN python3 -m pip install --no-cache-dir \
         ./$voila_wheel_filename \
-        requests
+        requests \
+        'jinja2==2.11.3' \
+        'markupsafe==2.0.1' \
+        'ipython_genutils==0.2.0'
 FROM scratch AS voila_rootfs
 COPY --from=voila_rootfs_builder /usr/ /usr/
 COPY --from=voila_rootfs_builder /etc/ /etc/
