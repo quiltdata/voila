@@ -1,0 +1,18 @@
+channels:
+  - plotly
+  - missionbio
+  - anaconda
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.7
+  - matplotlib
+  - missionbio.mosaic
+  - numpy
+  - pip
+  - plotly
+  - seaborn
+  - pip:
+    - kneed
+    - sklearn
