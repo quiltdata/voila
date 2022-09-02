@@ -39,8 +39,7 @@ COPY --from=voila_rootfs_builder /etc/ /etc/
 
 FROM base_image AS kernel_rootfs_builder
 RUN apt-get update && \
-	apt-get install -y --no-install-recommends wget && \
-	apt-get install -y --no-install-recommends ca-certificates
+	apt-get install -y --no-install-recommends wget ca-certificates
 # Miniconda
 ARG conda_dir="/usr/miniconda3"
 ENV PATH="${conda_dir}/bin:${PATH}"
