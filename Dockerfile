@@ -44,7 +44,6 @@ RUN apt-get update && \
 # Miniconda
 ARG conda_dir="/usr/miniconda3"
 ENV PATH="${conda_dir}/bin:${PATH}"
-ARG PATH="${conda_dir}/bin:${PATH}"
 ARG mconda="Miniconda3-py38_4.12.0-Linux-x86_64.sh"
 RUN wget \
     https://repo.anaconda.com/miniconda/"$mconda" && \
