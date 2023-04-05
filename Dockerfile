@@ -51,7 +51,7 @@ RUN wget \
 # Create conda env
 ARG cenv="customer-env.yml"
 COPY "$cenv" .
-RUN conda env create -n voilaenv --file "$cenv"
+RUN conda env create -n voilaenv --file "$cenv" && conda clean --all --yes
 # Use conda env for subsequent RUNs
 SHELL ["conda", "run", "-n", "voilaenv", "/bin/bash", "-c"]
 
