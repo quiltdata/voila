@@ -43,11 +43,14 @@ RUN apt-get update && \
 # Miniconda
 ARG conda_dir="/usr/miniconda3"
 ENV PATH="${conda_dir}/bin:${PATH}"
-ARG mconda="Miniconda3-py38_4.12.0-Linux-x86_64.sh"
+ARG mconda="Miniconda3-py38_23.1.0-1-Linux-x86_64.sh"
 RUN wget \
     https://repo.anaconda.com/miniconda/"$mconda" && \
     bash "$mconda" -p "$conda_dir" -b && \
-    rm -f "$mconda"
+    rm -f "$mconda" && \
+    conda install -n base conda-libmamba-solver && \
+    conda config --set solver libmamba
+
 # Create conda env
 ARG cenv="customer-env.yml"
 COPY "$cenv" .
