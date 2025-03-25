@@ -1,4 +1,4 @@
-ARG base_image=public.ecr.aws/lts/ubuntu:20.04
+ARG base_image=public.ecr.aws/lts/ubuntu:20.04@sha256:d8f8f65ad0e88f7ec2ae5ca1549784c72c97bed14bf34d4b1682aa30bc8ba82c
 FROM $base_image as base_image
 
 # This build stage exists to avoid rebuilding voila when only non-voila files are modified.
@@ -18,8 +18,8 @@ FROM base_image_python AS voila_builder
 WORKDIR /voila/build/
 COPY --from=voila_context /context .
 RUN apt-get install -y --no-install-recommends npm
-RUN python3 -m pip install -e . jupyter-packaging
-RUN python3 setup.py bdist_wheel --dist-dir /voila/dist
+RUN python3 -m pip install -v -e . jupyter-packaging
+RUN python3 setup.py bdist_wheel -v --dist-dir /voila/dist
 
 
 FROM base_image_python as voila_rootfs_builder
@@ -43,7 +43,7 @@ RUN apt-get update && \
 # Miniconda
 ARG conda_dir="/usr/miniconda3"
 ENV PATH="${conda_dir}/bin:${PATH}"
-ARG mconda="Miniconda3-py38_4.12.0-Linux-x86_64.sh"
+ARG mconda="Miniconda3-py38_23.11.0-2-Linux-x86_64.sh"
 RUN wget \
     https://repo.anaconda.com/miniconda/"$mconda" && \
     bash "$mconda" -p "$conda_dir" -b && \
@@ -55,7 +55,7 @@ RUN conda env create -n voilaenv --file "$cenv"
 # Use conda env for subsequent RUNs
 SHELL ["conda", "run", "-n", "voilaenv", "/bin/bash", "-c"]
 
-RUN python3 -m pip install --no-cache-dir altair bqplot ipykernel ipyvolume ipywidgets pandas perspective-python==1.0.1 pyarrow PyYAML quilt3 scipy
+# RUN python3 -m pip install --no-cache-dir
 FROM scratch AS kernel_rootfs
 COPY --from=kernel_rootfs_builder /usr/ /usr/
 COPY --from=kernel_rootfs_builder /etc/ /etc/
