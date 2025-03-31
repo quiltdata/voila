@@ -1,0 +1,8 @@
+{
+ "argv": [
+  "/kernel_wrapper.sh",
+  "{connection_file}"
+ ],
+ "display_name": "sandbox kernel TODO: check if it's required",
+ "language": "python"
+}

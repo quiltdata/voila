@@ -29,6 +29,34 @@ from .request_info_handler import RequestInfoSocketHandler
 from .utils import ENV_VARIABLE, create_include_assets_functions, get_page_config
 
 
+def get_user_credentials(request_handler):
+    import tornado.web
+
+    attrs_map = (
+        ("access_key", "AWS_ACCESS_KEY_ID"),
+        ("secret_key", "AWS_SECRET_ACCESS_KEY"),
+        ("session_token", "AWS_SESSION_TOKEN"),
+    )
+    creds = {dst: request_handler.get_query_argument(src, default="") for src, dst in attrs_map}
+    if any(creds.values()) and not all(creds.values()):
+        raise tornado.web.HTTPError(400, f'{", ".join(dict(attrs_map))} are required.')
+    return creds
+
+
+def get_pkg_vars(request_handler):
+    import tornado.web
+
+    attrs_map = (
+        ("pkg_bucket", "QUILT_PKG_BUCKET"),
+        ("pkg_name", "QUILT_PKG_NAME"),
+        ("pkg_top_hash", "QUILT_PKG_TOP_HASH"),
+    )
+    pkg_vars = {dst: request_handler.get_query_argument(src, default="") for src, dst in attrs_map}
+    if any(pkg_vars.values()) and not all(pkg_vars.values()):
+        raise tornado.web.HTTPError(400, f'{", ".join(dict(attrs_map))} are required.')
+    return pkg_vars
+
+
 class BaseVoilaHandler(JupyterHandler):
     def initialize(self, **kwargs):
         self.voila_configuration = kwargs["voila_configuration"]
@@ -81,6 +109,22 @@ class VoilaHandler(BaseVoilaHandler):
         self.kernel_started = False
 
     async def get_generator(self, path=None):
+        import tempfile
+        import urllib.request
+        import urllib.parse
+
+        url = self.request.arguments["url"][0].decode()
+        suffix = urllib.parse.urlparse(url).path.split("/")[-1]
+        with tempfile.NamedTemporaryFile(
+            dir=self.contents_manager.root_dir,
+            suffix=suffix,
+        ) as f:
+            f.write(urllib.request.urlopen(url).read())
+            f.flush()
+            async for x in self._get_generator(os.path.relpath(f.name, self.contents_manager.root_dir)):
+                yield x
+
+    async def _get_generator(self, path=None):
         # if the handler got a notebook_path argument, always serve that
         notebook_path = self.notebook_path or path
 
@@ -243,6 +287,8 @@ class VoilaHandler(BaseVoilaHandler):
             kernel_env[ENV_VARIABLE.VOILA_APP_PORT] = request_info[
                 ENV_VARIABLE.SERVER_PORT
             ]
+            kernel_env.update(get_user_credentials(self))
+            kernel_env.update(get_pkg_vars(self))
             kernel_id = await ensure_async(
                 self.kernel_manager.start_kernel(
                     kernel_name=gen.notebook.metadata.kernelspec.name,

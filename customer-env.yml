@@ -1,0 +1,37 @@
+channels:
+  - plotly
+  - missionbio
+  - anaconda
+  - conda-forge
+  - defaults
+
+platforms:
+  - linux-64
+
+dependencies:
+  - python=3.11
+  - matplotlib
+  - missionbio.mosaic
+  - numpy
+  - pip
+  - plotly
+  - seaborn
+  - pip:
+    - altair
+    - bqplot
+    - ipykernel
+    - ipympl
+    - ipython_genutils  # for ipyvolume, see https://github.com/widgetti/ipyvolume/issues/447
+    - ipyvolume
+    - ipywidgets
+    - kneed
+    - pandas
+    - perspective-python < 3
+    - pyarrow
+    - pyathena
+    - PyYAML
+    - quilt3
+    - scikit-learn
+    - scipy
+    - sqlalchemy
+    - voila == 0.5.8  # for catching voila dependencies
