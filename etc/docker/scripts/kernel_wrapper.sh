@@ -16,9 +16,8 @@ exec env -i /usr/bin/bwrap \
     --unshare-pid \
     --unshare-uts \
     --unshare-cgroup \
-    --ro-bind usr /usr \
-    --ro-bind etc/ /etc/ \
-    --ro-bind /etc/resolv.conf /etc/resolv.conf \
+    --ro-bind /usr /usr \
+    --ro-bind /etc/ /etc/ \
     --symlink usr/lib /lib \
     --symlink usr/lib64 /lib64 \
     --symlink usr/bin /bin \

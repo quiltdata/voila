@@ -68,7 +68,7 @@ EXPOSE 8866
 ADD etc/docker/scripts/voila_wrapper.sh /
 ADD etc/docker/scripts/kernel_wrapper.sh $voila_rootfs_dir
 USER $voila_uid
-COPY etc/docker/scripts/sandbox-kernelspec.json usr/local/share/jupyter/kernels/python3/kernel.json
+COPY etc/docker/scripts/sandbox-kernelspec.json usr/miniconda3/envs/voilaenv/share/jupyter/kernels/python3/kernel.json
 # TODO: bubblewrapper doesn't handle signals correctly,
 #       probably we could use tini with some flags.
 WORKDIR $voila_rootfs_dir
