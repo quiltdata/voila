@@ -10,10 +10,13 @@ platforms:
 
 dependencies:
   - python=3.11
+  # Releases without emSign ECC Root CA - G3
+  - ca-certificates >=2026.10.20
+  - certifi >=2026.10.19
   - matplotlib
   - missionbio.mosaic
   - numpy
-  - pip
+  - pip >=26.2.2  # its vendored certifi too
   - plotly
   - seaborn
   - pip:
