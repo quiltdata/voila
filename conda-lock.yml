@@ -13,7 +13,7 @@
 version: 1
 metadata:
   content_hash:
-    linux-64: 03e2adc0f48307e431112ee2ddab5f3abd019d5657fdee8524897b96c01b00bd
+    linux-64: 81e9fa0c10efd9f99ba254ae50470017ae0441eb6fd32648e8e5783f41e0da97
   channels:
   - url: plotly
     used_env_vars: []
@@ -294,26 +294,26 @@ package:
   category: main
   optional: false
 - name: ca-certificates
-  version: 2025.2.25
+  version: 2026.10.20
   manager: conda
   platform: linux-64
   dependencies: {}
-  url: https://conda.anaconda.org/anaconda/linux-64/ca-certificates-2025.2.25-h06a4308_0.tar.bz2
+  url: https://conda.anaconda.org/anaconda/linux-64/ca-certificates-2026.10.20-h06a4308_0.conda
   hash:
-    md5: ba2f1a3a29243f13c6898395f2c2dab7
-    sha256: 3b93acbbf19f6720aa1b8b4e4e2a9c2580af5d635384cf310586411efbb364e9
+    md5: a7c7f8e255dee547754b1cb0872a3798
+    sha256: d9bf7a77d56cc1b9619423463c324cbf88d759fe5999549b271b1807860d9d52
   category: main
   optional: false
 - name: certifi
-  version: 2025.1.31
+  version: 2026.10.23
   manager: conda
   platform: linux-64
   dependencies:
-    python: '>=3.11,<3.12.0a0'
-  url: https://conda.anaconda.org/anaconda/linux-64/certifi-2025.1.31-py311h06a4308_0.tar.bz2
+    python: '>=3.10'
+  url: https://conda.anaconda.org/anaconda/noarch/certifi-2026.10.23-pyhd3eb1b0_1.conda
   hash:
-    md5: 7ad703949235c3f0dcc99996989d5a90
-    sha256: b3d1c50537d3de350bc0a42947aac47037441bdb07fefcf1991c72012c8b6c68
+    md5: 3c8646edc9b52cd87b0dabe4813267f3
+    sha256: c2249e4073f0d072c4b81377fa04a09ac5ff9a0a00e9b479be0aa928a0a7b1a4
   category: main
   optional: false
 - name: cffi
@@ -2267,16 +2267,17 @@ package:
   category: main
   optional: false
 - name: openssl
-  version: 3.0.16
+  version: 3.5.9
   manager: conda
   platform: linux-64
   dependencies:
+    __glibc: '>=2.28,<3.0.a0'
     ca-certificates: ''
-    libgcc-ng: '>=11.2.0'
-  url: https://conda.anaconda.org/anaconda/linux-64/openssl-3.0.16-h5eee18b_0.tar.bz2
+    libgcc: '>=14'
+  url: https://conda.anaconda.org/anaconda/linux-64/openssl-3.5.9-h1b28b03_0.conda
   hash:
-    md5: a659f1ac2ace6e5c8bf4a5074c3b7788
-    sha256: 3ddd6080b6f008c6270ada8aa125af76afb3bd4ea4fbc47acccc2dacae0af8ee
+    md5: 32b8e1dff76a46d4ace2ca1fd6305c9e
+    sha256: c4d0c888fd0ead06e36b940e8a784b03b827586995d5b18db9996c70f30a0705
   category: main
   optional: false
 - name: overrides
@@ -2407,17 +2408,17 @@ package:
   category: main
   optional: false
 - name: pip
-  version: '25.0'
+  version: 26.2.2
   manager: conda
   platform: linux-64
   dependencies:
-    python: '>=3.11,<3.12.0a0'
+    python: '>=3.10,<3.14.0a0'
     setuptools: ''
     wheel: ''
-  url: https://conda.anaconda.org/anaconda/linux-64/pip-25.0-py311h06a4308_0.tar.bz2
+  url: https://conda.anaconda.org/anaconda/noarch/pip-26.2.2-pyhc872135_0.conda
   hash:
-    md5: de0f3617ef38333a13b7aebb17b761a0
-    sha256: 64f16503d8799c8ed3031e8c81d429353406504e98cefed97080fc35e2b55fc0
+    md5: bc9c5f469c71904c0c4a198cfbb42ff0
+    sha256: b795a5520306bf54aa8d0ae86531c6035881f31169a35066b3e0fb1eb9ca8740
   category: main
   optional: false
 - name: platformdirs
@@ -3907,6 +3908,16 @@ package:
   url: https://files.pythonhosted.org/packages/31/08/aa4fdfb71f7de5176385bd9e90852eaf6b5d622735020ad600f2bab54385/typing_inspection-0.4.0-py3-none-any.whl
   hash:
     sha256: 50e72559fcd2a6367a19f7a7e610e6afcb9fac940c650290eed893d61386832f
+  category: main
+  optional: false
+- name: tzdata
+  version: '2026.6'
+  manager: pip
+  platform: linux-64
+  dependencies: {}
+  url: https://files.pythonhosted.org/packages/0a/66/9a06c2227fedfd4919f0eaaa8b94377d9730882a7e4f95823c9a331ab5e1/tzdata-2026.6-py2.py3-none-any.whl
+  hash:
+    sha256: 0a10eec6e13ef16b627fabed9a5f2ba61a62b1c67f327305f4e7e412a70b4aec
   category: main
   optional: false
 - name: voila
