@@ -16,6 +16,7 @@ dependencies:
   - matplotlib
   - missionbio.mosaic
   - numpy
+  - nss >=3.132  # built-in roots of kaleido's Chromium
   - pip >=26.2.2  # its vendored certifi too
   - plotly
   - seaborn
